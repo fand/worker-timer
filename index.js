@@ -1,16 +1,18 @@
 "use strict";
 
-if (!(global === global.window && global.URL && global.Blob && global.Worker)) {
+var createObjectURL = (window.URL || window.webkitURL || {}).createObjectURL || function(){};
+
+if (!(global === global.window && global.Worker)) {
   module.exports = global;
 } else {
   module.exports = (function(undefined) {
-    var SetIntervalJS = global.URL.createObjectURL(
-      new global.Blob([
+    var SetIntervalJS = createObjectURL(
+      new Blob([
         "var t=0;onmessage=function(e){clearInterval(t);if(e.data)t=setInterval(function(){postMessage(0)},e.data)}"
       ], { type: "text/javascript" })
     );
-    var SetTimeoutJS = global.URL.createObjectURL(
-      new global.Blob([
+    var SetTimeoutJS = createObjectURL(
+      new Blob([
         "var t=0;onmessage=function(e){clearTimeout(t);if(e.data)t=setTimeout(function(){postMessage(0)},e.data)}"
       ], { type: "text/javascript" })
     );
