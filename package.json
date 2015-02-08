@@ -1,15 +1,20 @@
 {
   "name": "worker-timer",
   "description": "Stable timer API",
-  "version": "0.1.0",
-  "author": "mohayonao <mohayonao@gmail.com>",
+  "version": "0.2.0",
+  "author": "fand <fand@gmork.in>",
   "bugs": {
-    "url": "https://github.com/mohayonao/worker-timer/issues"
+    "url": "https://github.com/fand/worker-timer/issues"
   },
   "devDependencies": {
     "browserify": "^8.1.1",
-    "mocha-phantomjs": "^3.5.3",
-    "phantomjs": "^1.9.13",
+    "chai": "^1.10.0",
+    "karma": "^0.12.31",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.1.0",
     "uglify-js": "^2.4.16"
   },
   "homepage": "https://github.com/mohayonao/worker-timer/",
@@ -25,12 +30,12 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mohayonao/worker-timer.git"
+    "url": "https://github.com/fand/worker-timer.git"
   },
   "scripts": {
     "build": "npm run build-browser && npm run build-minify",
     "build-browser": "browserify index.js --standalone WorkerTimer > build/worker-timer.js",
     "build-minify": "uglifyjs build/worker-timer.js > build/worker-timer.min.js",
-    "test": "mocha-phantomjs index.html"
+    "test": "node_modules/karma/bin/karma start"
   }
 }
