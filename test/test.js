@@ -151,4 +151,29 @@ describe("WorkerTimer", function() {
       }, 100);
     });
   });
+
+  describe("clearInterval(timerId: number, preserveTimer: boolean): void", function() {
+    it("creates new timer when timerId is invalid", function(done) {
+      var count = 0;
+
+      var oldTimerId = WorkerTimer.setInterval(function() {
+        count += 1;
+      }, 100);
+      WorkerTimer.clearInterval(oldTimerId, true);
+
+      setTimeout(function() {
+        assert(count === 0, 'callback never called');
+
+        var newTimerId = WorkerTimer.setInterval(function () {
+          count += 1;
+        }, 10, oldTimerId);
+
+        setTimeout(function () {
+          assert(count > 5, 'setInterval works even after clearInterval');
+          assert(newTimerId === oldTimerId, 'reusing same timer');
+          done();
+        }, 100);
+      }, 100);
+    });
+  });
 });
