@@ -201,4 +201,23 @@ describe("WorkerTimer", function() {
       }, 100);
     });
   });
+
+  describe('deleteTimer(timerId: number): boolean', function () {
+    it('deletes timer explicitly', function (done) {
+      var timeoutId  = WorkerTimer.setTimeout(function () {}, 10);
+      var intervalId = WorkerTimer.setInterval(function () {}, 10);
+
+      setTimeout(function () {
+        WorkerTimer.deleteTimer(timeoutId);
+        WorkerTimer.deleteTimer(intervalId);
+
+        var newTimeoutId  = WorkerTimer.setTimeout(function () {}, 10, timeoutId);
+        var newIntervalId = WorkerTimer.setInterval(function () {}, 10, intervalId);
+
+        assert(newTimeoutId  !== timeoutId);
+        assert(newIntervalId !== intervalId);
+        done();
+      }, 100);
+    });
+  })
 });
