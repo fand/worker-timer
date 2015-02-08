@@ -13,10 +13,10 @@ describe("WorkerTimer", function() {
       passed += 1;
     }, 25);
 
-    assert(typeof timerId === "number");
+    assert(typeof timerId === "number", 'timerId is valid number');
 
     setTimeout(function() {
-      assert(passed >= 15);
+      assert(passed >= 15, 'callback was called multiple times');
       done();
     }, 500);
   });
@@ -28,7 +28,7 @@ describe("WorkerTimer", function() {
       passed += 1;
     }, 25);
 
-    assert(typeof timerId === "number");
+    assert(typeof timerId === "number", 'timerId is valid number');
 
     setTimeout(function() {
       WorkerTimer.clearInterval(timerId);
@@ -36,7 +36,7 @@ describe("WorkerTimer", function() {
       savedPassed = passed;
 
       setTimeout(function() {
-        assert(passed === savedPassed);
+        assert(passed === savedPassed, 'timer was stopped by clearInterval');
         done();
       }, 250);
     }, 250);
@@ -48,10 +48,10 @@ describe("WorkerTimer", function() {
       passed += 1;
     }, 25);
 
-    assert(typeof timerId === "number");
+    assert(typeof timerId === "number", 'timerId is valid number');
 
     setTimeout(function() {
-      assert(passed === 1);
+      assert(passed === 1, 'calleback called once');
       done();
     }, 500);
   });
@@ -65,42 +65,42 @@ describe("WorkerTimer", function() {
     WorkerTimer.clearTimeout(timerId);
 
     setTimeout(function() {
-      assert(passed === 0);
+      assert(passed === 0, 'callback never called');
       done();
     }, 500);
   });
 
   describe("setTimeout(callback: function, delay: number, timerId: number): number", function() {
     it("creates new timer when timerId is invalid", function(done) {
-      var passed = 0;
+      var count = 0;
 
       timerId = WorkerTimer.setTimeout(function() {
-        passed += 1;
+        count += 1;
       }, 10, null);
 
-      assert(timerId !== null);
-      assert(typeof timerId === "number");
+      assert(timerId !== null, 'new timerId returned');
+      assert(typeof timerId === "number", 'timerId is valid number');
 
       setTimeout(function() {
-        assert(passed === 1);
+        assert(count === 1, 'callback called once');
         done();
       }, 300);
     });
-    it("recycles old timer when the id is given", function(done) {
-      var passed = 0;
+    it("reuses old timer when the id is given", function(done) {
+      var count = 0;
 
       var oldTimerId = WorkerTimer.setTimeout(function() {
-        passed += 1;
+        count += 1;
       }, 10);
 
       setTimeout(function() {
         var newTimerId = WorkerTimer.setTimeout(function() {
-          passed += 1;
+          count += 1;
         }, 10, oldTimerId);
 
         setTimeout(function() {
-          assert(passed === 2);
-          assert(newTimerId === oldTimerId);
+          assert(count === 2, 'callback was called for both setTimeout call');
+          assert(newTimerId === oldTimerId, 'reusing same timer');
           done();
         }, 100);
       }, 300);
@@ -109,21 +109,21 @@ describe("WorkerTimer", function() {
 
   describe("setInterval(callback: function, delay: number, timerId: number): number", function() {
     it("creates new timer when timerId is invalid", function(done) {
-      var passed = 0;
+      var count = 0;
 
       var timerId = WorkerTimer.setInterval(function() {
-        passed += 1;
+        count += 1;
       }, 10, null);
 
-      assert(timerId !== null);
-      assert(typeof timerId === "number");
+      assert(timerId !== null, 'new timerId returned');
+      assert(typeof timerId === "number", 'timerId is valid number');
 
       setTimeout(function() {
-        assert(passed > 5, 'callback is called multiple times');
+        assert(count > 5, 'callback was called multiple times');
         done();
       }, 100);
     });
-    it("recycles old timer when the id is given", function(done) {
+    it("reusees old timer when the id is given", function(done) {
       var count = 0;
       var count1 = 0;
       var count2 = 0;
@@ -142,10 +142,10 @@ describe("WorkerTimer", function() {
         }, 10, oldTimerId);
 
         setTimeout(function() {
-          assert(count > 15);
-          assert(oldCount === count1);
-          assert(count - count1 === count2);
-          assert(newTimerId === oldTimerId);
+          assert(count > 15, 'callback was called multiple times');
+          assert(oldCount === count1, 'old callback was disabled when new callback registered');
+          assert(count - count1 === count2, 'valid call counts');
+          assert(newTimerId === oldTimerId, 'reusing same timer');
           done();
         }, 100);
       }, 100);
