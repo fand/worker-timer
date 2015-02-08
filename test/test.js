@@ -71,12 +71,6 @@ describe("WorkerTimer", function() {
   });
 
   describe("setTimeout(callback: function, delay: number, timerId: number): number", function() {
-    // var timerId;
-    // afterEach(function() {
-    //   WorkerTimer.clearInterval(timerId);
-    //   WorkerTimer.clearTimeout(timerId);
-    // });
-
     it("creates new timer when timerId is invalid", function(done) {
       var passed = 0;
 
@@ -104,13 +98,9 @@ describe("WorkerTimer", function() {
           passed += 1;
         }, 10, oldTimerId);
 
-        var newTimerId2 = WorkerTimer.setTimeout(function() {
-          passed += 1;
-        }, 10, newTimerId);
-
         setTimeout(function() {
-          //window.assert(passed === 2);
-          //window.assert(newTimerId === timerId);
+          assert(passed === 2);
+          assert(newTimerId === oldTimerId);
           done();
         }, 100);
       }, 300);
