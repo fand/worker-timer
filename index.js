@@ -49,7 +49,7 @@ if (!(global === global.window && global.Worker)) {
     return {
       setInterval: function(callback, delay, timerId) {
         if (timerId !== undefined && _timers[timerId]) {
-          _timers[timerId].timer.set(callback, delay);
+          _timers[timerId].set(callback, delay);
           return timerId;
         }
         else {
@@ -65,7 +65,7 @@ if (!(global === global.window && global.Worker)) {
       },
       setTimeout: function(callback, delay, timerId) {
         if (timerId !== undefined && _timers[timerId]) {
-          _timers[timerId].timer.set(callback, delay);
+          _timers[timerId].set(callback, delay);
           return timerId;
         }
         else {
