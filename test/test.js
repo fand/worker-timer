@@ -219,5 +219,26 @@ describe("WorkerTimer", function() {
         done();
       }, 100);
     });
+
+    it('clears timeout / interval of the timer', function (done) {
+      var timeoutCalled  = false;
+      var intervalCalled = false;
+
+      var timeoutId = WorkerTimer.setTimeout(function () {
+        timeoutCalled = true;
+      }, 100);
+      var intervalId = WorkerTimer.setInterval(function () {
+        intervalCalled = true;
+      }, 100);
+
+      WorkerTimer.deleteTimer(timeoutId);
+      WorkerTimer.deleteTimer(intervalId);
+
+      setTimeout(function () {
+        assert(timeoutCalled  === false, 'timeout cancelled');
+        assert(intervalCalled === false, 'interval cancelled');
+        done();
+      }, 300);
+    });
   })
 });
