@@ -95,6 +95,12 @@ if (!(global === global.window && global.Worker)) {
       },
       deleteTimer: function(timerId) {
         if (timerId !== undefined && _timers[timerId]) {
+          if (_timers[timerId] instanceof WorkerTimeout) {
+            this.clearTimeout(timerId);
+          }
+          else {
+            this.clearInterval(timerId);
+          }
           delete _timers[timerId];
         }
       }
