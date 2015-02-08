@@ -1,29 +1,29 @@
 # worker-timer
-[![Build Status](http://img.shields.io/travis/mohayonao/worker-timer.svg?style=flat)](https://travis-ci.org/mohayonao/worker-timer)
-[![NPM Version](http://img.shields.io/npm/v/worker-timer.svg?style=flat)](https://www.npmjs.org/package/worker-timer)
-[![Bower](https://img.shields.io/bower/v/worker-timer.svg?style=flat)](https://github.com/mohayonao/worker-timer)
+[![Build Status](http://img.shields.io/travis/fand/worker-timer.svg?style=flat)](https://travis-ci.org/fand/worker-timer)
 
 > Stable timer API
 
+## diff from original [mohayonao/worker-timer](https://github.com/mohayonao/worker-timer)
+
+In original worker-timer, it creates timer object for each `setTimeout()` `setInterval()` call.
+This repository prevents killing timer object and reusing them.
+We can also delete timers explicitly via `deleteTimer()`.
+
 ## Installation
 
-bower:
+Use npm:
 
 ```
-bower install worker-timer
+npm install --save fand/worker-timer
 ```
-
-downloads:
-
-- [worker-timer.js](https://raw.githubusercontent.com/mohayonao/tickable-timer/master/build/worker-timer.js)
-- [worker-timer.min.js](https://raw.githubusercontent.com/mohayonao/tickable-timer/master/build/worker-timer.min.js)
 
 ## API
 
-- `setInterval(callback: function, delay: number): number`
-- `clearInterval(timerId: number): void`
-- `setTimeout(callback: function, delay: number): number`
-- `clearTimeout(timerId: number): void`
+- `setInterval(callback: function, delay: number, timerId: number): number`
+- `clearInterval(timerId: number, preserveTimer: boolean): void`
+- `setTimeout(callback: function, delay: number, timerId: number): number`
+- `clearTimeout(timerId: number, preserveTimer: boolean): void`
+- `deleteTimer(timerId: number): void`
 
 ## License
 
