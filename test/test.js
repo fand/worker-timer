@@ -106,4 +106,49 @@ describe("WorkerTimer", function() {
       }, 300);
     });
   });
+
+  describe("setInterval(callback: function, delay: number, timerId: number): number", function() {
+    it("creates new timer when timerId is invalid", function(done) {
+      var passed = 0;
+
+      var timerId = WorkerTimer.setInterval(function() {
+        passed += 1;
+      }, 10, null);
+
+      assert(timerId !== null);
+      assert(typeof timerId === "number");
+
+      setTimeout(function() {
+        assert(passed > 5, 'callback is called multiple times');
+        done();
+      }, 100);
+    });
+    it("recycles old timer when the id is given", function(done) {
+      var count = 0;
+      var count1 = 0;
+      var count2 = 0;
+
+      var oldTimerId = WorkerTimer.setInterval(function() {
+        count += 1;
+        count1 += 1;
+      }, 10);
+
+      setTimeout(function() {
+        var oldCount = count;
+
+        var newTimerId = WorkerTimer.setInterval(function() {
+          count += 1;
+          count2 += 1;
+        }, 10, oldTimerId);
+
+        setTimeout(function() {
+          assert(count > 15);
+          assert(oldCount === count1);
+          assert(count - count1 === count2);
+          assert(newTimerId === oldTimerId);
+          done();
+        }, 100);
+      }, 100);
+    });
+  });
 });
