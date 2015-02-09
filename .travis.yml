@@ -2,8 +2,9 @@ language: node_js
 sudo: true
 node_js:
   - "0.10.36"
+env:
+  - DISPLAY=:99.0
 before_install:
+  - sh -e /etc/init.d/xvfb start
   - sh .travis/scripts/install_chrome.sh
   - sh .travis/scripts/setup.sh
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
